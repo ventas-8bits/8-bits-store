@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { LogoImg, grassPixel } from '../assets/img/images.js';
+import { UserContext } from '../context/userContext.jsx';
+// Components
 import {
   Box,
   Button,
   Container,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Heading,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Icon,
   Image,
 } from '@chakra-ui/react';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { LogoImg, grassPixel } from '../assets/img/images.js';
+import FormInput from '../components/FormInput.jsx';
 
 const LoginPage = () => {
-  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+
+  const { loginUser } = useContext(UserContext);
 
   const {
     handleSubmit,
@@ -26,11 +26,17 @@ const LoginPage = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    try {
+      await loginUser(values.email, values.password);
+      navigate('/auth/admin/', {
+        replace: true,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
   };
-
-  const handleClick = () => setShow(!show);
 
   return (
     <>
@@ -53,11 +59,11 @@ const LoginPage = () => {
             </Heading>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl isInvalid={errors.email}>
-                <FormLabel htmlFor="email">Your Email: </FormLabel>
-                <Input
-                  bg="white"
-                  id="email"
-                  placeholder="Ex: your.mail@mail.com"
+                <FormInput
+                  type={'text'}
+                  label={'Your Email: '}
+                  name={'email'}
+                  placeholder={'ex: your.mail@mail.com'}
                   {...register('email', {
                     required: 'Email is required',
                     pattern: {
@@ -70,37 +76,21 @@ const LoginPage = () => {
               </FormControl>
 
               <FormControl isInvalid={errors.password} size="md">
-                <FormLabel htmlFor="password">Your Password: </FormLabel>
-                <InputGroup>
-                  <Input
-                    bg="white"
-                    id="password"
-                    type={show ? 'text' : 'password'}
-                    pr="4.5rem"
-                    {...register('password', {
-                      required: 'Password is required',
-                      minLength: { value: 6, message: 'Minimum length should be 6' },
-                    })}
-                  />
-                  <InputRightElement mr="0.5rem">
-                    <Button
-                      leftIcon={show ? <AiFillEyeInvisible /> : <AiFillEye />}
-                      h="1.75rem"
-                      size="sm"
-                      onClick={handleClick}
-                    ></Button>
-                  </InputRightElement>
-                </InputGroup>
+                <FormInput
+                  type={'password'}
+                  label={'Your Password: '}
+                  name={'password'}
+                  placeholder={''}
+                  eyeButton={true}
+                  {...register('password', {
+                    required: 'Password is required',
+                    minLength: { value: 6, message: 'Minimum length should be 6' },
+                  })}
+                />
                 <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
               </FormControl>
 
-              <Button
-                // leftIcon={<AiFillEye />}
-                mt={4}
-                colorScheme="teal"
-                isLoading={isSubmitting}
-                type="submit"
-              >
+              <Button mt={4} colorScheme="teal" isLoading={isSubmitting} type="submit">
                 Submit
               </Button>
             </form>

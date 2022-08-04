@@ -1,11 +1,16 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import { UserContext } from '../context/userContext';
 
 const MainLayout = () => {
+  const { user } = useContext(UserContext);
+
   return (
     <>
-      <div>MainLayout</div>
-      <Outlet />
+      <div className="w-96 mx-auto mt-10">
+        <h1>Layout main</h1>
+        <Outlet />
+      </div>
     </>
   );
 };
