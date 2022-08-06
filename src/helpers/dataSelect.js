@@ -10,3 +10,8 @@ export const categories = [
   { value: 'keychains', label: 'Keychains' },
   { value: 'figure', label: 'Figure' },
 ];
+
+export const initRef = [
+  { value: 'kc-', label: 'Ref Keychains' },
+  { value: 'fg-', label: 'Ref Figure' },
+];
