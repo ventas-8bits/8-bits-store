@@ -4,6 +4,7 @@ import { MdOutlinePhotoCamera } from 'react-icons/md';
 import FormEditImage from './forms/FormEditImage';
 import {
   Box,
+  Container,
   IconButton,
   Image,
   Popover,
@@ -20,9 +21,9 @@ const EditImage = ({ src, alt, loading, onEdit }) => {
 
   return (
     <>
-      <Box width={'100%'} display={'flex'} justifyContent="center">
+      <Container mb="2rem" display="flex" justifyContent={'center'}>
         <Box position="relative" width="220px">
-          <Image src={src} boxSize="200px" height={'auto'} alt={alt} />
+          <Image src={src} boxSize="200px" height={'auto'} alt={alt} borderRadius={'lg'} />
           <Popover
             isOpen={isOpen}
             initialFocusRef={firstFieldRef}
@@ -57,7 +58,7 @@ const EditImage = ({ src, alt, loading, onEdit }) => {
             </PopoverContent>
           </Popover>
         </Box>
-      </Box>
+      </Container>
     </>
   );
 };

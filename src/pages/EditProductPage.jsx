@@ -4,11 +4,13 @@ import { useFireStore } from '../hooks/useFireStore';
 
 import EditImage from '../components/editProduct/EditImage';
 import FormEditInformation from '../components/editProduct/forms/FormEditInformation';
+import { Heading, useToast } from '@chakra-ui/react';
 
 const EditProductPage = () => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const { product, getOneProduct, loading, editImage } = useFireStore();
+  const { product, getOneProduct, loading, editImage, editInformation } = useFireStore();
   let q = searchParams.get('q');
+  const toast = useToast();
 
   useEffect(() => {
     const getProd = async (id) => {
@@ -27,24 +29,57 @@ const EditProductPage = () => {
 
   const editProductImage = async (values) => {
     try {
-      console.log(values);
+      // console.log(values);
       await editImage(values.image, product.id);
+      toast({
+        title: 'Updated photo',
+        description: '🥳 Photo updated successfully 🥳',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
     } catch (error) {
-      console.log(error);
+      // console.log(error.message);
+      toast({
+        title: 'ERROR',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 
   const editProductInformation = async (values) => {
     try {
-      console.log(values);
+      await editInformation(product.id, values);
+      toast({
+        title: 'Updated information',
+        description: '🥳 The information was updated successfully 🥳',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: 'ERROR',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 
   return (
     <>
-      <div>EditProductPage</div>
+      <Heading as={'h4'} size={'xl'} textAlign="center" mb="2rem">
+        Edit "{product.name}"
+      </Heading>
       <EditImage
         src={product?.url_image}
         alt={product.name}
@@ -54,7 +89,7 @@ const EditProductPage = () => {
       />
       <FormEditInformation
         onEdit={editProductInformation}
-        loading={loading.getOne}
+        loading={loading.editInfo}
         product={product}
       />
     </>

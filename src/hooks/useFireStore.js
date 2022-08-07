@@ -160,6 +160,9 @@ const useFireStore = () => {
   const editImage = async (file, id) => {
     try {
       setLoading((prev) => ({ ...prev, editImage: true }));
+      if (typeof id !== 'string') {
+        throw { message: 'Id not valid' };
+      }
       const docRef = doc(db, 'products', id);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
@@ -174,9 +177,42 @@ const useFireStore = () => {
 
       setProduct({ ...product, url_image: imageURL });
     } catch (error) {
-      throw { message: error };
+      throw { message: error.message };
     } finally {
       setLoading((prev) => ({ ...prev, editImage: false }));
+    }
+  };
+
+  const editInformation = async (id, info) => {
+    try {
+      setLoading((prev) => ({ ...prev, editInfo: true }));
+      if (typeof id !== 'string') {
+        throw { message: 'Id not valid' };
+      }
+      const docRef = doc(db, 'products', id);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        throw { message: 'Product not found' };
+      }
+
+      const dataToEdit = {
+        name: info.name,
+        reference: `${reference}${id}`,
+        price: info.price,
+        categories: info.categories,
+        description: info.description,
+        topics: info.topics,
+      };
+
+      await updateDoc(docRef, dataToEdit);
+      setProduct({ ...product, ...dataToEdit });
+
+      console.log('Actualizado');
+    } catch (error) {
+      throw { message: error.message };
+    } finally {
+      setLoading((prev) => ({ ...prev, editInfo: false }));
     }
   };
 
@@ -262,6 +298,7 @@ const useFireStore = () => {
     deleteProduct,
     getOneProduct,
     editImage,
+    editInformation,
   };
 };
 
