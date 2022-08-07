@@ -42,8 +42,11 @@ const OptionStyled = styled.option`
   }
 `;
 
-const FormSelect = forwardRef(
-  ({ multiple = false, options, label, name, onBlur, onChange, children }, ref) => {
+const FormSelectEditMultiple = forwardRef(
+  (
+    { multiple = false, options, label, name, onBlur, onChange, defaultValue = [], children },
+    ref
+  ) => {
     // let val = !multiple ? (defaultValue = ) : defaultValue
 
     return (
@@ -56,6 +59,7 @@ const FormSelect = forwardRef(
           name={name}
           onBlur={onBlur}
           onChange={onChange}
+          defaultValue={defaultValue}
           ref={ref}
         >
           {options.map((item) => (
@@ -69,20 +73,4 @@ const FormSelect = forwardRef(
   }
 );
 
-export default FormSelect;
-
-/**
-     <>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
-      <Select
-        isMulti
-        options={options}
-        id={name}
-        name={name}
-        onBlur={onBlur}
-        onChange={onChange}
-        defaultValue={[]}
-        ref={ref}
-      />
-    </>
-*/
+export default FormSelectEditMultiple;

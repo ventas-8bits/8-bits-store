@@ -20,7 +20,7 @@ const AppRouter = () => {
 
       <Route path="/" element={<ProtectedRoutes />}>
         <Route path="/auth/admin" element={<AdminHomePage />}></Route>
-        <Route path="/auth/admin/edit/" element={<EditProductPage />}></Route>
+        <Route path="/auth/admin/edit" element={<EditProductPage />}></Route>
       </Route>
 
       <Route path="/auth/admin/login" element={<LoginPage />}></Route>

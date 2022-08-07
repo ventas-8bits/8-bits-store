@@ -1,9 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { Button, Flex, Avatar, Text, Badge, Box, useDisclosure, Image } from '@chakra-ui/react';
 import ModalComponent from '../ModalComponent';
 
 const CardProduct = ({ item = {}, onDelete }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    console.log('edit:', item.id);
+    navigate(`/auth/admin/edit?q=${item.id}`);
+  };
 
   return (
     <>
@@ -44,7 +52,7 @@ const CardProduct = ({ item = {}, onDelete }) => {
           className="botones"
           width={'80%'}
         >
-          <Button colorScheme={'blue'} w={'5rem'}>
+          <Button colorScheme={'blue'} w={'5rem'} onClick={handleEdit}>
             Edit
           </Button>
           <Button colorScheme={'red'} w={'5rem'} m={['0.2rem 0', '0 0.5rem']} onClick={onOpen}>

@@ -6,12 +6,14 @@ import {
   deleteDoc,
   doc,
   endBefore,
+  getDoc,
   getDocs,
   limit,
   orderBy,
   query,
   setDoc,
   startAfter,
+  updateDoc,
   where,
 } from 'firebase/firestore/lite';
 import { nanoid } from 'nanoid';
@@ -19,6 +21,7 @@ import { deleteObject, getDownloadURL, ref, updateMetadata, uploadBytes } from '
 
 const useFireStore = () => {
   const [data, setData] = useState([]);
+  const [product, setProduct] = useState({});
   const [error, setError] = useState('');
   const [loading, setLoading] = useState({});
   const [lastDoc, setLastDoc] = useState(null);
@@ -43,7 +46,6 @@ const useFireStore = () => {
       const url = await getDownloadURL(storageRef);
       return url;
     } catch (error) {
-      console.log(error);
       throw { message: error.message };
     }
   };
@@ -71,7 +73,7 @@ const useFireStore = () => {
       setData([newProd, ...data]);
       console.log('agregado');
     } catch (error) {
-      console.log(error);
+      throw { message: error };
     } finally {
       setLoading((prev) => ({ ...prev, createProduct: false }));
     }
@@ -94,9 +96,87 @@ const useFireStore = () => {
       setLastDoc(lastVisible);
       setIsTheLast(false);
     } catch (error) {
-      console.log(error);
+      throw { message: error };
     } finally {
       setLoading((prev) => ({ ...prev, getData: false }));
+    }
+  };
+
+  const deleteImage = async (id) => {
+    try {
+      const imgRef = ref(storage, `products/${id}`);
+      await deleteObject(imgRef);
+      return true;
+    } catch (error) {
+      throw { message: error };
+      throw { message: 'Image not found' };
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    try {
+      setLoading((prev) => ({ ...prev, delete: true }));
+      const prodDel = collection(db, 'products');
+      const q = query(prodDel, where('id', '==', id));
+      // const q = query(prodDel, where('id', '==', id));
+      const snapShot = await getDocs(q);
+      if (snapShot.empty) {
+        throw { message: 'Document not exist' };
+      }
+      const imgDel = await deleteImage(id);
+      if (imgDel) {
+        const prodRef = doc(db, 'products', id);
+        await deleteDoc(prodRef);
+        setData(data.filter((item) => item.id !== id));
+        console.log('Borrado');
+      }
+      // snapShot.docs.forEach((el) => console.log(el.data()));
+      // console.log('delete: ', id);
+    } catch (error) {
+      throw { message: error };
+    } finally {
+      setLoading((prev) => ({ ...prev, delete: false }));
+    }
+  };
+
+  const getOneProduct = async (id) => {
+    try {
+      setLoading((prev) => ({ ...prev, getOne: true }));
+      const docRef = doc(db, 'products', id);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        throw { message: 'Product not found' };
+      }
+
+      setProduct(docSnap.data());
+    } catch (error) {
+      throw { message: error };
+    } finally {
+      setLoading((prev) => ({ ...prev, getOne: false }));
+    }
+  };
+
+  const editImage = async (file, id) => {
+    try {
+      setLoading((prev) => ({ ...prev, editImage: true }));
+      const docRef = doc(db, 'products', id);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        throw { message: 'Product not found' };
+      }
+
+      const imageURL = await saveAndGetImageURL(file[0], id);
+      await updateDoc(docRef, {
+        url_image: imageURL,
+      });
+      console.log('Actualizado: ', imageURL);
+
+      setProduct({ ...product, url_image: imageURL });
+    } catch (error) {
+      throw { message: error };
+    } finally {
+      setLoading((prev) => ({ ...prev, editImage: false }));
     }
   };
 
@@ -168,46 +248,10 @@ const useFireStore = () => {
     }
   };
 
-  const deleteImage = async (id) => {
-    try {
-      const imgRef = ref(storage, `products/${id}`);
-      await deleteObject(imgRef);
-      return true;
-    } catch (error) {
-      console.log(error);
-      throw { message: 'Image not found' };
-    }
-  };
-
-  const deleteProduct = async (id) => {
-    try {
-      setLoading((prev) => ({ ...prev, delete: true }));
-      const prodDel = collection(db, 'products');
-      const q = query(prodDel, where('id', '==', id));
-      // const q = query(prodDel, where('id', '==', id));
-      const snapShot = await getDocs(q);
-      if (snapShot.empty) {
-        throw { message: 'Document not exist' };
-      }
-      const imgDel = await deleteImage(id);
-      if (imgDel) {
-        const prodRef = doc(db, 'products', id);
-        await deleteDoc(prodRef);
-        setData(data.filter((item) => item.id !== id));
-        console.log('Borrado');
-      }
-      // snapShot.docs.forEach((el) => console.log(el.data()));
-      // console.log('delete: ', id);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading((prev) => ({ ...prev, delete: false }));
-    }
-  };
-
   return {
     data,
     loading,
+    product,
     createNewProduct,
     getProducts,
     ChangePage,
@@ -216,6 +260,8 @@ const useFireStore = () => {
     isTheLast,
     isThefirst,
     deleteProduct,
+    getOneProduct,
+    editImage,
   };
 };
 

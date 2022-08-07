@@ -1,50 +1,30 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { categories, initRef, topics } from '../../helpers/dataSelect.js';
+import { categories, initRef, topics } from '../../../helpers/dataSelect.js';
 
 import { Box, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
-import FormInput from '../FormInput';
-import FormSelect from '../FormSelect.jsx';
-import InputFile from '../InputFile';
+import FormInputEdit from '../../FormInputEdit';
 
-const FormCreate = ({ onCreate, modalClose, loading }) => {
+import FormSelectEditSingle from '../../FormSelectEditSingle.jsx';
+import FormSelectEditMultiple from '../../FormSelectEditMultiple.jsx';
+
+const FormEditInformation = ({ onEdit, loading, product }) => {
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm();
 
   return (
     <>
-      <form onSubmit={handleSubmit(onCreate)}>
-        <FormControl isInvalid={errors.image} mb={2}>
-          <InputFile
-            name="image"
-            accept={'image/png,image/jpeg,image/svg+xml'}
-            multiple={false}
-            label={'Product Image'}
-            {...register('image', {
-              required: 'Image is required',
-              validate: {
-                size: (v) => (v[0]?.size > 1024 * 1024 ? 'Less 1mb' : true),
-                type: (v) =>
-                  v[0].type === 'image/png' ||
-                  v[0].type === 'image/jpeg' ||
-                  v[0].type === 'image/svg+xml'
-                    ? true
-                    : 'Image .png, .jpeg, .jpg',
-              },
-            })}
-          />
-          <FormErrorMessage>{errors.image && errors.image.message}</FormErrorMessage>
-        </FormControl>
-
+      <form onSubmit={handleSubmit(onEdit)}>
         <FormControl isInvalid={errors.name} mb={2}>
-          <FormInput
+          <FormInputEdit
             size="sm"
             type={'text'}
             label={'Product Name: '}
             name={'name'}
+            defaultValue={product.name}
             {...register('name', {
               required: 'Product name is required',
             })}
@@ -53,11 +33,12 @@ const FormCreate = ({ onCreate, modalClose, loading }) => {
         </FormControl>
 
         <FormControl isInvalid={errors.reference} mb={2}>
-          <FormSelect
+          <FormSelectEditSingle
             multiple={false}
             options={initRef}
             name={'reference'}
             label={'Reference:'}
+            defaultValue={product.reference?.slice(0, 3)}
             {...register('reference', {
               required: 'Reference are required',
             })}
@@ -66,11 +47,12 @@ const FormCreate = ({ onCreate, modalClose, loading }) => {
         </FormControl>
 
         <FormControl isInvalid={errors.price} mb={2}>
-          <FormInput
+          <FormInputEdit
             size="sm"
             type={'number'}
             label={'Product Price: '}
             name={'price'}
+            defaultValue={product.price}
             {...register('price', {
               required: 'Product price is required',
             })}
@@ -79,11 +61,12 @@ const FormCreate = ({ onCreate, modalClose, loading }) => {
         </FormControl>
 
         <FormControl isInvalid={errors.categories} mb={2}>
-          <FormSelect
+          <FormSelectEditMultiple
             multiple={true}
             options={categories}
             name={'categories'}
             label={'Categories:'}
+            defaultValue={product.categories}
             {...register('categories', {
               required: 'Categories are required',
             })}
@@ -92,10 +75,11 @@ const FormCreate = ({ onCreate, modalClose, loading }) => {
         </FormControl>
 
         <FormControl isInvalid={errors.description} mb={2}>
-          <FormInput
+          <FormInputEdit
             size="sm"
             type={'text'}
             label={'Product Description: '}
+            defaultValue={product.description}
             name={'description'}
             {...register('description', {
               required: 'Product description is required',
@@ -105,11 +89,12 @@ const FormCreate = ({ onCreate, modalClose, loading }) => {
         </FormControl>
 
         <FormControl isInvalid={errors.topics} mb={2}>
-          <FormSelect
+          <FormSelectEditMultiple
             multiple={true}
             options={topics}
             name={'topics'}
             label={'Topics:'}
+            defaultValue={product.topics}
             {...register('topics', {
               required: 'Topics are required',
             })}
@@ -118,9 +103,6 @@ const FormCreate = ({ onCreate, modalClose, loading }) => {
         </FormControl>
 
         <Box mt={4} w={'100%'} display="flex" justifyContent="flex-end" alignItems="center">
-          <Button mr={3} onClick={modalClose} colorScheme="red">
-            Close
-          </Button>
           <Button mr={3} type={'submit'} isLoading={loading} colorScheme="blue">
             Add
           </Button>
@@ -130,4 +112,4 @@ const FormCreate = ({ onCreate, modalClose, loading }) => {
   );
 };
 
-export default FormCreate;
+export default FormEditInformation;
