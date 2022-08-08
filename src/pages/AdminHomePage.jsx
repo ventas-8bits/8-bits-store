@@ -11,17 +11,18 @@ import {
   Text,
   Badge,
   Box,
+  Heading,
 } from '@chakra-ui/react';
 import ModalComponent from '../components/ModalComponent';
 import FormCreate from '../components/admin/FormCreate';
-import ListProducts from '../components/admin/ListProducts';
+import ListProducts from '../components/ListProducts';
 import LoadingCards from '../components/LoadingCards';
+import CardProduct from '../components/CardProduct';
 
 const AdminHomePage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data, loading, getProducts, ChangePage, deleteProduct, createNewProduct } =
     useFireStore();
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getAll = async () => {
@@ -41,7 +42,7 @@ const AdminHomePage = () => {
 
   const handleCreate = async (values) => {
     try {
-      console.log(values);
+      // console.log(values);
       await createNewProduct(values);
       onClose();
     } catch (error) {
@@ -59,7 +60,9 @@ const AdminHomePage = () => {
 
   return (
     <>
-      <div>AdminHomePage</div>
+      <Heading as={'h2'} size={'xl'} mb="1.5rem">
+        Welcome !!!
+      </Heading>
       <Button onClick={onOpen}>Create Product</Button>
       <ModalComponent isOpen={isOpen} onClose={onClose} title={'Create Product'} buttons={false}>
         <FormCreate
@@ -68,14 +71,27 @@ const AdminHomePage = () => {
           onCreate={handleCreate}
         ></FormCreate>
       </ModalComponent>
-      {loading.createProduct ? (
+
+      {data.length <= 0 ? (
+        <p>No hay productos</p>
+      ) : loading.createProduct ? (
         <LoadingCards />
       ) : (
-        <ListProducts data={data} onDelete={handleDelete} />
+        <ListProducts>
+          {data.map((item) => (
+            <CardProduct
+              key={item.product_id}
+              item={item}
+              onDelete={handleDelete}
+              loading={loading.delete}
+            />
+          ))}
+        </ListProducts>
       )}
 
-
-      <Button onClick={ChangePage}>More</Button>
+      <Button onClick={ChangePage} isLoading={loading.getChange}>
+        More
+      </Button>
     </>
   );
 };

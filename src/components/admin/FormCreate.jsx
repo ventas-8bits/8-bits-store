@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { categories, initRef, topics } from '../../helpers/dataSelect.js';
 
-import { Box, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Switch } from '@chakra-ui/react';
 import FormInput from '../FormInput';
 import FormSelect from '../FormSelect.jsx';
 import InputFile from '../InputFile';
 
 const FormCreate = ({ onCreate, modalClose, loading }) => {
+  const [sale, setSale] = useState(false);
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm();
 
+  useEffect(() => {}, []);
+
   return (
     <>
+      {sale && 'sale'}
       <form onSubmit={handleSubmit(onCreate)}>
         <FormControl isInvalid={errors.image} mb={2}>
           <InputFile
@@ -73,10 +77,45 @@ const FormCreate = ({ onCreate, modalClose, loading }) => {
             name={'price'}
             {...register('price', {
               required: 'Product price is required',
+              validate: {
+                type: (v) => (isNaN(v) ? 'Price should be a number' : true),
+              },
             })}
           />
           <FormErrorMessage>{errors.price && errors.price.message}</FormErrorMessage>
         </FormControl>
+
+        <FormControl isInvalid={errors.isNew} display="flex" alignItems="center" my="1rem">
+          <FormLabel htmlFor="isNew" mb="0">
+            Is a new Product?
+          </FormLabel>
+          <Switch id="isNew" {...register('isNew', { required: false })} />
+        </FormControl>
+
+        <Box border={'1px'} borderColor="gray.200" p="0.5rem" my="1rem">
+          <FormControl isInvalid={errors.isNew} display="flex" alignItems="center" mb="1rem">
+            <FormLabel htmlFor="isOnSale" mb="0">
+              Is on Sale?
+            </FormLabel>
+            <Switch id="isOnSale" {...register('isOnSale', { required: false })} />
+          </FormControl>
+
+          <FormControl isInvalid={errors.priceOnSale} mb={2}>
+            <FormInput
+              size="sm"
+              type={'number'}
+              label={'Product Price on sale: '}
+              name={'priceOnSale'}
+              {...register('priceOnSale', {
+                required: false,
+                validate: {
+                  type: (v) => (isNaN(v) ? 'Price should be a number' : true),
+                },
+              })}
+            />
+            <FormErrorMessage>{errors.priceOnSale && errors.priceOnSale.message}</FormErrorMessage>
+          </FormControl>
+        </Box>
 
         <FormControl isInvalid={errors.categories} mb={2}>
           <FormSelect

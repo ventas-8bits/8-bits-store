@@ -1,17 +1,19 @@
 export const topics = [
   { value: 'comics', label: 'Comics' },
-  { value: 'manga-anime', label: 'Manga & Anime' },
+  { value: 'manga', label: 'Manga' },
+  { value: 'anime', label: 'Anime' },
   { value: 'videogames', label: 'Video Games' },
-  { value: 'movies-series', label: 'Movies & Series' },
+  { value: 'movies', label: 'Movies' },
+  { value: 'series', label: 'Series' },
   { value: 'others', label: 'Others' },
 ];
 
 export const categories = [
-  { value: 'keychains', label: 'Keychains' },
+  { value: 'keychain', label: 'Keychain' },
   { value: 'figure', label: 'Figure' },
 ];
 
 export const initRef = [
-  { value: 'kc-', label: 'Ref Keychains' },
+  { value: 'kc-', label: 'Ref Keychain' },
   { value: 'fg-', label: 'Ref Figure' },
 ];

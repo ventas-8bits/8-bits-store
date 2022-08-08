@@ -30,7 +30,7 @@ const EditProductPage = () => {
   const editProductImage = async (values) => {
     try {
       // console.log(values);
-      await editImage(values.image, product.id);
+      await editImage(values.image, product.product_id);
       toast({
         title: 'Updated photo',
         description: '🥳 Photo updated successfully 🥳',
@@ -54,7 +54,8 @@ const EditProductPage = () => {
 
   const editProductInformation = async (values) => {
     try {
-      await editInformation(product.id, values);
+      // console.log(values);
+      await editInformation(product.product_id, values);
       toast({
         title: 'Updated information',
         description: '🥳 The information was updated successfully 🥳',
@@ -78,20 +79,26 @@ const EditProductPage = () => {
   return (
     <>
       <Heading as={'h4'} size={'xl'} textAlign="center" mb="2rem">
-        Edit "{product.name}"
+        Edit "{product.product_name}"
       </Heading>
-      <EditImage
-        src={product?.url_image}
-        alt={product.name}
-        id={product.id}
-        onEdit={editProductImage}
-        loading={loading.editImage}
-      />
-      <FormEditInformation
-        onEdit={editProductInformation}
-        loading={loading.editInfo}
-        product={product}
-      />
+      {!product.product_id ? (
+        'No Existe el producto'
+      ) : (
+        <>
+          <EditImage
+            src={product?.product_url_image}
+            alt={product.product_name}
+            id={product.product_id}
+            onEdit={editProductImage}
+            loading={loading.editImage}
+          />
+          <FormEditInformation
+            onEdit={editProductInformation}
+            loading={loading.editInfo}
+            product={product}
+          />
+        </>
+      )}
     </>
   );
 };

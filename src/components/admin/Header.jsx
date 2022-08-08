@@ -1,10 +1,11 @@
 import React, { useState, useLayoutEffect, useRef, useContext } from 'react';
 import { UserContext } from '../../context/userContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import { Box, Button, Heading, Icon, Text } from '@chakra-ui/react';
 import { MdMenu, MdLogout } from 'react-icons/md';
+import FormSearch from '../FormSearch';
 
 const Header = ({ title, sidebarWidth }) => {
   const [size, setSize] = useState(true);
@@ -48,19 +49,24 @@ const Header = ({ title, sidebarWidth }) => {
           {size && (
             <Icon as={MdMenu} onClick={handleSideClick} w={8} h={8} mr="3" cursor={'pointer'} />
           )}
-          <Text fontSize={'2xl'}>{title}</Text>
+          <Link to="/auth/admin">
+            <Text fontSize={{ base: 'lg', md: '2xl' }}>{title}</Text>
+          </Link>
         </Box>
-        <Icon
-          as={MdLogout}
-          onClick={handleLogout}
-          w={8}
-          h={8}
-          mr="3"
-          cursor={'pointer'}
-          _hover={{
-            color: 'blue.200',
-          }}
-        />
+        <Box display={'flex'} alignItems="centers">
+          <FormSearch />
+          <Icon
+            as={MdLogout}
+            onClick={handleLogout}
+            w={8}
+            h={8}
+            mx="3"
+            cursor={'pointer'}
+            _hover={{
+              color: 'blue.200',
+            }}
+          />
+        </Box>
       </HeaderContainer>
 
       <SideBar ref={refSideBar} sidebarWidth={sidebarWidth}>
