@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import InputFile from '../../InputFile';
+import InputFile from './InputFile';
 
 const FormEditImage = ({ loading, modalClose, onEdit }) => {
   const {
@@ -11,11 +11,11 @@ const FormEditImage = ({ loading, modalClose, onEdit }) => {
   } = useForm();
 
   const onSubmit = (values) => {
-    console.log(values);
+    onEdit(values);
   };
 
   return (
-    <form onSubmit={handleSubmit(onEdit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={errors.image}>
         <InputFile
           name="image"
@@ -35,10 +35,20 @@ const FormEditImage = ({ loading, modalClose, onEdit }) => {
             },
           })}
         />
-        <FormErrorMessage>{errors.image && errors.image.message}</FormErrorMessage>
+        <FormErrorMessage>
+          {errors.image && errors.image.message}
+        </FormErrorMessage>
       </FormControl>
-      <FormErrorMessage>{errors.image && errors.image.message}</FormErrorMessage>
-      <Box mt={4} w={'100%'} display="flex" justifyContent="flex-end" alignItems="center">
+      <FormErrorMessage>
+        {errors.image && errors.image.message}
+      </FormErrorMessage>
+      <Box
+        mt={4}
+        w={'100%'}
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+      >
         <Button mr={3} onClick={modalClose} colorScheme="red">
           Cancel
         </Button>

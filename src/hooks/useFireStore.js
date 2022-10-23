@@ -19,7 +19,13 @@ import {
   where,
 } from 'firebase/firestore/lite';
 import { nanoid } from 'nanoid';
-import { deleteObject, getDownloadURL, ref, updateMetadata, uploadBytes } from 'firebase/storage';
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  updateMetadata,
+  uploadBytes,
+} from 'firebase/storage';
 
 const useFireStore = () => {
   const [data, setData] = useState([]);
@@ -79,7 +85,7 @@ const useFireStore = () => {
         product_reference: `${reference}${nano}`,
         product_price: price,
         product_categories: categories,
-        product_description: description.toLowerCase(),
+        product_description: description,
         product_url_image: imageURL,
         product_topics: topics,
         product_date: Date.now(),
@@ -107,7 +113,11 @@ const useFireStore = () => {
       setLoading((prev) => ({ ...prev, getData: true }));
       const docRef = collection(db, 'products');
 
-      const first = query(docRef, orderBy('product_date', 'desc'), limit(limitPage));
+      const first = query(
+        docRef,
+        orderBy('product_date', 'desc'),
+        limit(limitPage)
+      );
       const snapShot = await getDocs(first);
 
       const lastVisible = snapShot.docs[snapShot.docs.length - 1] || null;
@@ -224,7 +234,7 @@ const useFireStore = () => {
         product_reference: `${info.reference}${id}`,
         product_price: info.price,
         product_categories: info.categories,
-        product_description: info.description.toLowerCase(),
+        product_description: info.description,
         product_topics: info.topics,
         product_priceOnSale: info.priceOnSale,
         product_isNew: info.isNew,
@@ -247,7 +257,10 @@ const useFireStore = () => {
       console.log(search);
       setLoading((prev) => ({ ...prev, search: true }));
       const docRef = collection(db, 'products');
-      const q_name = query(docRef, where('product_name', '==', search.toLowerCase()));
+      const q_name = query(
+        docRef,
+        where('product_name', '==', search.toLowerCase())
+      );
       const q_cat = query(
         docRef,
         where('product_categories', 'array-contains', search.toLowerCase())

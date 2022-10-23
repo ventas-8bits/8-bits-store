@@ -18,6 +18,7 @@ import FormCreate from '../components/admin/FormCreate';
 import ListProducts from '../components/ListProducts';
 import LoadingCards from '../components/LoadingCards';
 import CardProduct from '../components/CardProduct';
+import Loading from '../components/Loading';
 
 const AdminHomePage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,12 +33,11 @@ const AdminHomePage = () => {
   }, []);
 
   if (loading.getData) {
-    return <p>Loading...</p>;
+    return <Loading></Loading>;
   }
 
   const changeUserPage = () => {
     ChangePage();
-    console.log(loading.createProd);
   };
 
   const handleCreate = async (values) => {

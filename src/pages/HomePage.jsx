@@ -6,7 +6,7 @@ import styled from 'styled-components/macro';
 
 import { Box, Button, Container, Image } from '@chakra-ui/react';
 
-const ContainerAdminate = styled(Box)`
+const ContainerTextAnimate = styled(Box)`
   width: 100%;
   font-size: 1rem;
   display: block;
@@ -16,8 +16,7 @@ const ContainerAdminate = styled(Box)`
   border-right: 4px solid;
   //width: 13ch; /*numero de caracteres*/
   width: ${(props) => props.lenght + 1}ch;
-  animation: typing 3s steps(${(props) => props.lenght + 1}), blink 0.5s infinite step-end alternate,
-    move 10s infinite;
+  animation: typing 3s steps(${(props) => props.lenght + 1}), blink 0.5s infinite step-end alternate;
   overflow: hidden;
 
   @media screen and (min-width: 700px) {
@@ -37,25 +36,28 @@ const ContainerAdminate = styled(Box)`
       border-color: transparent;
     }
   }
+`;
 
+const ContainerFloating = styled(Box)`
+  animation: move 10s infinite;
   @keyframes move {
     0% {
       transform: translate(0, 0);
     }
     16% {
-      transform: translate(0%, 25%);
+      transform: translate(0%, 7%);
     }
     32% {
       transform: translate(0, 0);
     }
     48% {
-      transform: translate(5%, 0%);
+      transform: translate(3%, 0%);
     }
     64% {
-      transform: translate(5%, 25%);
+      transform: translate(3%, 7%);
     }
     82% {
-      transform: translate(5%, 0%);
+      transform: translate(3%, 0%);
     }
     100% {
       transform: translate(0, 0);
@@ -87,8 +89,6 @@ const HomePage = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const welcomeMessage = user ? `Welcome ${user.email}` : 'Hello world!!!';
-  console.log(user);
-  console.log(welcomeMessage.length);
 
   const handleGoLogin = () => {
     navigate('/auth/admin/login');
@@ -101,7 +101,9 @@ const HomePage = () => {
     <>
       <Box backgroundColor={'blue.50'} minH="100vh">
         <Container>
-          <Image src={LogoImg.img} alt={LogoImg.alt} pt="2rem" />
+          <ContainerFloating>
+            <Image src={LogoImg.img} alt={LogoImg.alt} pt="2rem" />
+          </ContainerFloating>
           <Box my={'5rem'} w={'full'} display="flex" justifyContent={'center'}>
             {user ? (
               <>
@@ -114,7 +116,9 @@ const HomePage = () => {
             )}
           </Box>
           <Box my="2rem" display={'flex'} justifyContent={'center'} alignItems={'center'}>
-            <ContainerAdminate lenght={welcomeMessage.length}>{welcomeMessage}</ContainerAdminate>
+            <ContainerTextAnimate lenght={welcomeMessage.length}>
+              {welcomeMessage}
+            </ContainerTextAnimate>
           </Box>
         </Container>
       </Box>

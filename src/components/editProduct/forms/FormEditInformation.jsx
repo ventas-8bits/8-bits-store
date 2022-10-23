@@ -38,7 +38,9 @@ const FormEditInformation = ({ onEdit, loading, product }) => {
                 required: 'Product name is required',
               })}
             />
-            <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.name && errors.name.message}
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={errors.reference} mb={2}>
@@ -52,7 +54,9 @@ const FormEditInformation = ({ onEdit, loading, product }) => {
                 required: 'Reference are required',
               })}
             />
-            <FormErrorMessage>{errors.reference && errors.reference.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.reference && errors.reference.message}
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={errors.price} mb={2}>
@@ -66,10 +70,17 @@ const FormEditInformation = ({ onEdit, loading, product }) => {
                 required: 'Product price is required',
               })}
             />
-            <FormErrorMessage>{errors.price && errors.price.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.price && errors.price.message}
+            </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={errors.isNew} display="flex" alignItems="center" my="1rem">
+          <FormControl
+            isInvalid={errors.isNew}
+            display="flex"
+            alignItems="center"
+            my="1rem"
+          >
             <FormLabel htmlFor="isNew" mb="0">
               Is a new Product?
             </FormLabel>
@@ -81,7 +92,12 @@ const FormEditInformation = ({ onEdit, loading, product }) => {
           </FormControl>
 
           <Box border={'1px'} borderColor="gray.200" p="0.5rem" my="1rem">
-            <FormControl isInvalid={errors.isNew} display="flex" alignItems="center" mb="1rem">
+            <FormControl
+              isInvalid={errors.isNew}
+              display="flex"
+              alignItems="center"
+              mb="1rem"
+            >
               <FormLabel htmlFor="isOnSale" mb="0">
                 Is on Sale?
               </FormLabel>
@@ -123,7 +139,9 @@ const FormEditInformation = ({ onEdit, loading, product }) => {
                 required: 'Categories are required',
               })}
             />
-            <FormErrorMessage>{errors.categories && errors.categories.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.categories && errors.categories.message}
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={errors.description} mb={2}>
@@ -137,7 +155,9 @@ const FormEditInformation = ({ onEdit, loading, product }) => {
                 required: 'Product description is required',
               })}
             />
-            <FormErrorMessage>{errors.description && errors.description.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.description && errors.description.message}
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={errors.topics} mb={2}>
@@ -151,12 +171,25 @@ const FormEditInformation = ({ onEdit, loading, product }) => {
                 required: 'Topics are required',
               })}
             />
-            <FormErrorMessage>{errors.topics && errors.topics.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.topics && errors.topics.message}
+            </FormErrorMessage>
           </FormControl>
 
-          <Box mt={4} w={'100%'} display="flex" justifyContent="flex-end" alignItems="center">
-            <Button mr={3} type={'submit'} isLoading={loading} colorScheme="blue">
-              Add
+          <Box
+            mt={4}
+            w={'100%'}
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="center"
+          >
+            <Button
+              mr={3}
+              type={'submit'}
+              isLoading={loading}
+              colorScheme="blue"
+            >
+              Edit
             </Button>
           </Box>
         </form>

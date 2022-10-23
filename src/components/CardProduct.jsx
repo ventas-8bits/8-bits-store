@@ -1,7 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Flex, Avatar, Text, Badge, Box, useDisclosure, Image } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Avatar,
+  Text,
+  Badge,
+  Box,
+  useDisclosure,
+  Image,
+} from '@chakra-ui/react';
 import ModalComponent from './ModalComponent';
 
 const CardProduct = ({ item = {}, onDelete, loading }) => {
@@ -34,6 +43,9 @@ const CardProduct = ({ item = {}, onDelete, loading }) => {
       <Box
         key={item.product_reference}
         display="flex"
+        flexDir={['column', 'row']}
+        justifyContent={['center', 'space-between']}
+        alignItems="center"
         my={5}
         p={'1rem'}
         border="1px"
@@ -44,7 +56,7 @@ const CardProduct = ({ item = {}, onDelete, loading }) => {
           <Text fontWeight="bold">
             {item.product_name}
             <Badge ml="1" colorScheme="green">
-              $ {item.product_price}Col
+              $ {item.product_price} Col
             </Badge>
             {item.product_isNew && (
               <Badge ml="1" colorScheme="purple">
@@ -62,9 +74,9 @@ const CardProduct = ({ item = {}, onDelete, loading }) => {
         </Box>
         <Box
           display={'flex'}
-          flexDirection={['column', 'row']}
-          justifyContent={['space-around', 'flex-end']}
-          alignItems={['flex-end', 'center']}
+          flexDirection="row"
+          justifyContent={['center', 'flex-end']}
+          alignItems={['center', 'center']}
           className="botones"
           width={'80%'}
         >
@@ -74,7 +86,7 @@ const CardProduct = ({ item = {}, onDelete, loading }) => {
           <Button
             colorScheme={'red'}
             w={'5rem'}
-            m={['0.2rem 0', '0 0.5rem']}
+            m={['0.2rem 0.5rem', '0 0.5rem']}
             onClick={onOpen}
             loading={loading}
           >

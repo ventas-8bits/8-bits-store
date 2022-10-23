@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { MdOutlinePhotoCamera } from 'react-icons/md';
 
-import FormEditImage from './forms/FormEditImage';
+import FormEditImage from './FormEditImage';
 import {
+  Avatar,
   Box,
   Container,
   IconButton,
@@ -15,15 +16,25 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-const EditImage = ({ src, alt, loading, onEdit }) => {
+const EditImage = ({ src, alt, loading, onEdit, isAvatar = false }) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const firstFieldRef = useRef(null);
 
   return (
     <>
       <Container mb="2rem" display="flex" justifyContent={'center'}>
-        <Box position="relative" width="220px">
-          <Image src={src} boxSize="200px" height={'auto'} alt={alt} borderRadius={'lg'} />
+        <Box position="relative" width={isAvatar ? 'auto' : '220px'}>
+          {isAvatar ? (
+            <Avatar src={src} size="2xl" name={alt} />
+          ) : (
+            <Image
+              src={src}
+              boxSize="200px"
+              height={'auto'}
+              alt={alt}
+              borderRadius={'lg'}
+            />
+          )}
           <Popover
             isOpen={isOpen}
             initialFocusRef={firstFieldRef}

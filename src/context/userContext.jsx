@@ -10,7 +10,7 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const unsuscribe = onAuthStateChanged(auth, (user) => {
-      console.log(user);
+      // console.log(user);
       if (user) {
         const { email, photoURL, displayName, uid, emailVerified, providerData } = user;
         setUser({
@@ -41,7 +41,7 @@ const UserProvider = ({ children }) => {
         uid: res.user.uid,
       });
     } catch (error) {
-      throw error.code;
+      throw { message: error.message };
     } finally {
       setLoading(false);
     }
@@ -52,7 +52,7 @@ const UserProvider = ({ children }) => {
       await signOut(auth);
       setUser(null);
     } catch (error) {
-      throw error;
+      throw { message: error.message };
     }
   };
 

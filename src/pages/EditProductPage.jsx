@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useFireStore } from '../hooks/useFireStore';
 
-import EditImage from '../components/editProduct/EditImage';
+import EditImage from '../components/EditImage';
 import FormEditInformation from '../components/editProduct/forms/FormEditInformation';
 import { Heading, useToast } from '@chakra-ui/react';
+import Loading from '../components/Loading';
 
 const EditProductPage = () => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const { product, getOneProduct, loading, editImage, editInformation } = useFireStore();
+  const { product, getOneProduct, loading, editImage, editInformation } =
+    useFireStore();
   let q = searchParams.get('q');
   const toast = useToast();
 
@@ -19,12 +21,8 @@ const EditProductPage = () => {
     getProd(q);
   }, []);
 
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
-
   if (loading.getOne) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   const editProductImage = async (values) => {

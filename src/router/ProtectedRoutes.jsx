@@ -28,13 +28,13 @@ const MainContainer = styled.main`
   box-sizing: border-box;
   width: 100%;
   padding: 1rem;
-  margin: 1rem auto;
+  margin: 6rem 0;
 
   @media screen and (min-width: 700px) {
     position: relative;
     width: calc(95% - ${(props) => props.sidebarWidth});
     left: ${(props) => props.sidebarWidth};
-    margin: 1rem;
+    margin: 3rem 0;
   }
 `;
 

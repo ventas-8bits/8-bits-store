@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import {
   Box,
+  Button,
   FormControl,
   FormErrorMessage,
   Input,
@@ -29,21 +30,24 @@ const FormSearch = () => {
   };
 
   return (
-    <Box w={{ base: '150px', sm: '100%' }}>
+    <Box w={{ base: '250px', sm: '100%' }}>
       <form onSubmit={handleSubmit(onsubmit)}>
-        <FormControl isInvalid={errors.search}>
-          <InputGroup>
-            <Input
-              {...register('search', {
-                required: 'Required',
-              })}
-              background={'white'}
-              outline={errors.search && '3px red'}
-              color="green.700"
-            />
-            <InputRightElement children={<MdOutlineSearch color="grey" />} />
-          </InputGroup>
-        </FormControl>
+        <Box display={'flex'} alignItems={'center'} gap="1">
+          <FormControl isInvalid={errors.search}>
+            <InputGroup>
+              <Input
+                {...register('search', {
+                  required: 'Required',
+                })}
+                background={'white'}
+                outline={errors.search && '3px red'}
+                color="green.700"
+              />
+              <InputRightElement children={<MdOutlineSearch color="grey" />} />
+            </InputGroup>
+          </FormControl>
+          <Button type="submit">🔎</Button>
+        </Box>
       </form>
     </Box>
   );

@@ -11,6 +11,7 @@ import AdminHomePage from '../pages/AdminHomePage';
 import Page404 from '../pages/Page404';
 import EditProductPage from '../pages/EditProductPage';
 import SearchPage from '../pages/SearchPage';
+import ProfilePage from '../pages/ProfilePage';
 
 const AppRouter = () => {
   return (
@@ -23,6 +24,7 @@ const AppRouter = () => {
         <Route path="/auth/admin" element={<AdminHomePage />}></Route>
         <Route path="/auth/admin/edit" element={<EditProductPage />}></Route>
         <Route path="/auth/admin/search" element={<SearchPage />}></Route>
+        <Route path="/auth/admin/profile/:id" element={<ProfilePage />}></Route>
       </Route>
 
       <Route path="/auth/admin/login" element={<LoginPage />}></Route>
